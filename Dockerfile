@@ -1,6 +1,6 @@
 FROM ubuntu:xenial
 
-EXPOSE 8080 8140
+EXPOSE 8140
 
 ENV RELEASE xenial
 
