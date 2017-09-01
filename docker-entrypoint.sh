@@ -1,14 +1,5 @@
 #!/bin/bash
 
-DIR=/docker-entrypoint.d
-
-if [[ -d "$DIR" ]]
-then
-  /bin/run-parts --verbose --regex '\.(sh|rb)$' "$DIR"
-fi
-
-#exec "$@"
-
 . /etc/default/puppetserver
 
 restartfile="/opt/puppetlabs/server/data/puppetserver/restartcounter"
@@ -27,5 +18,5 @@ COMMAND="${JAVA_BIN} ${JAVA_ARGS} ${LOG_APPENDER} \
          --restart-file "${restartfile}" \
          ${@}"
 
-echo Command = $COMMAND
+echo Running command: $COMMAND
 exec $COMMAND
