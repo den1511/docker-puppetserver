@@ -33,21 +33,10 @@ RUN apt-get update \
 # Allow JAVA_ARGS tuning
 RUN sed -i -e 's@^JAVA_ARGS=\(.*\)$@JAVA_ARGS=\$\{JAVA_ARGS:-\1\}@' /etc/default/puppetserver
 
-# Support Arbitrary User IDs
-RUN \
-  chgrp -R 0 /etc/puppetlabs/puppetserver && \
-  chmod -R g=u /etc/puppetlabs/puppetserver && \
-  chgrp -R 0 /opt/puppetlabs && \
-  chmod -R g=u /opt/puppetlabs && \
-  chgrp -R 0 /var/log/puppetlabs && \
-  chmod -R g=u /var/log/puppetlabs
-
-USER 999
-
 RUN puppetserver gem install ruby_gpg --version $RUBY_GPG_VERSION --no-ri --no-rdoc \
   && puppetserver gem install hiera-eyaml-gpg --version $HIERA_EYAML_GPG_VERSION --no-ri --no-rdoc
 
 VOLUME ["/etc/puppetlabs/code/environments"]
 
-COPY /docker-entrypoint.sh /
-ENTRYPOINT ["/docker-entrypoint.sh"]
+ENTRYPOINT ["puppetserver"]
+CMD ["foreground"]
